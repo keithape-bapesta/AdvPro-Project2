@@ -67,5 +67,48 @@ public:
 
 
 class Player {
-  /*TODO: write your code*/
-};
+  private: 
+  string name; 
+  int health; 
+  int attackPower; 
+  
+  vector<Item> inventory;
+  
+  public: 
+  Place* currentPlace; 
+  
+  //Functions
+  Player(const string& n, int h, int a) : name(n), health(h), attackPower(a), currentPlace(nullptr) {}; 
+  void pickUpItem(const Item& i) {
+	  inventory.push_back(i);
+	  cout << name << " picks up " << i.getName() << "." << endl; 
+  }
+  void attackEnemy( Enemy& e) {
+	  cout << name << " attacks " << e.getName() << " with power " <<  attackPower << endl;
+	  e.setHealth(attackPower); 
+	  int newHp = max(0, e.getHealth());
+	  
+	  if (newHp <= 0) { 
+		cout << e.getName() << " has been defeated!" << endl; 
+	  } else { 
+		cout << e.getName() << " has " << newHp << " health left." << endl;
+	  }	  
+  }
+  
+  void displayInventory() const {
+	  cout << "Inventory:" << endl; 
+	  if (inventory.empty()) {
+		  cout << "Inventory is empty" << endl;
+		  return; 
+	  }
+	  for (const auto& i : inventory) {
+			cout << "- " << i.getName() << ": " << i.getDesc() << endl; 
+	} 
+  }
+  
+  void moveToPlace(Place* p) {
+	  if (!p) return; 
+	  currentPlace = p; 
+	  cout << name << " moves to " << p->getDesc() << endl; 
+  }
+ };
